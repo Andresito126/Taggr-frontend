@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:taggr/features/auth/presentation/screens/register_screen.dart';
 import 'package:taggr/shared/components/input_field.dart';
 import 'package:taggr/shared/theme/app_colors.dart';
 import 'package:taggr/shared/theme/app_text_styles.dart';
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: AppColors.surface,
-                  border: Border.all(color: AppColors.borderWhite),
+                  border: Border.all(color: AppColors.borderGrey),
                 ),
                 child: Column(
                   children: [
@@ -119,7 +120,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: AppTextStyles.caption,
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegisterScreen())
+                            );
+                          },
                           child: Text(
                             " Sign Up",
                             style: AppTextStyles.caption.copyWith(
