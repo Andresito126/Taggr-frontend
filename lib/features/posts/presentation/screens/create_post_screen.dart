@@ -6,7 +6,9 @@ import 'package:taggr/shared/theme/app_colors.dart';
 import 'package:taggr/shared/theme/app_text_styles.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({super.key});
+  final Map<String, dynamic>? postToEdit;
+
+  const CreatePostScreen({super.key, this.postToEdit});
 
   @override
   State<CreatePostScreen> createState() => _CreatePostScreenState();
@@ -17,6 +19,23 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
+
+  String? _selectedCategory;
+  final List<String> _categories = ["Graffiti", "Tatto", "Digital Art", "Stickers", "Urban Photography"];
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.postToEdit != null) {
+      _titleController.text = widget.postToEdit!['title'] ?? '';
+      _descriptionController.text = widget.postToEdit!['description'] ?? '';
+
+      if (_categories.contains(widget.postToEdit!['category'])) {
+        _selectedCategory = widget.postToEdit!['category'];
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -33,7 +52,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         title: TitleSection(title: "Create", sizeFont: 36),
-        //titleSpacing: 0,
+
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(color: AppColors.borderWhite, height: 1.0),
@@ -41,10 +60,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          // child: Padding(padding: const EdgeInsetsGeometry.symmetric(horizontal: 24),
           child: SizedBox(
             width: double.infinity,
-            // margin: const EdgeInsets.only(bottom: 16, top: 16),
+
             child: Column(
               children: [
                 Container(
@@ -126,9 +144,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.neonGreen,
                       foregroundColor: Colors.black,
@@ -151,7 +167,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ),
         ),
       ),
-      // ),
     );
   }
 }

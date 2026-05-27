@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 imageUrl: "assets/imgs/tatto_img.png",
                 category: "Tatto",
                 userName: "AndreJu",
-                title: "Jungle",
+                title: "Tatto",
                 description: "This is a graffit very fkn cool babe",
                 likes: 12,
                 comments: 18,
