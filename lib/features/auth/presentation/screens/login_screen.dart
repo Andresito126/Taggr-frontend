@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:taggr/features/auth/presentation/screens/register_screen.dart';
 import 'package:taggr/shared/components/input_field.dart';
 import 'package:taggr/shared/theme/app_colors.dart';
 import 'package:taggr/shared/theme/app_text_styles.dart';
@@ -91,7 +90,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.neonGreen,
                           foregroundColor: Colors.black,
@@ -121,11 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RegisterScreen())
-                            );
+                            Navigator.pushReplacementNamed(context, '/home');
                           },
                           child: Text(
                             " Sign Up",
@@ -152,26 +149,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: TitleSection(title: "Login", svgIconPath: "assets/logos/taggr_logo.svg"),
-    //     backgroundColor: Colors.black,
-    //     elevation: 0,
-    //     scrolledUnderElevation: 0,
-
-    //     bottom: PreferredSize(
-    //       preferredSize: const Size.fromHeight(1.0),
-    //       child: Container(
-    //         color: Colors.white24,
-    //         height: 1.0,
-    //       ),
-    //     ),
-
-    //   ),
-    //   body: Center(
-    //     child: Text("Login Screen"),
-    //   ),
-    // );
   }
 }

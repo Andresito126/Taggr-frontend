@@ -5,11 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TitleSection extends StatelessWidget {
   final String title;
   final String? svgIconPath;
+  final double sizeFont;
 
   const TitleSection({
   super.key, 
   required this.title, 
-  required this.svgIconPath
+  required this.svgIconPath,
+  this.sizeFont = 18
   });
 
   @override
@@ -24,7 +26,9 @@ Widget build(BuildContext context) {
             ],
             Text(
               title,
-              style: AppTextStyles.title,
+              style: AppTextStyles.title.copyWith(
+                fontSize: sizeFont,
+              ),
             ),
           ],
         ),
