@@ -25,7 +25,6 @@ static TextStyle get subtitle => GoogleFonts.bebasNeue(
     color: AppColors.textPrimary,
   );
 
-  // ESTE ES EL OTRO QUE FALTABA ('caption')
   static TextStyle get caption => GoogleFonts.poppins(
     fontSize: 14,
     color: AppColors.neonBlue, 

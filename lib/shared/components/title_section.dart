@@ -10,7 +10,7 @@ class TitleSection extends StatelessWidget {
   const TitleSection({
   super.key, 
   required this.title, 
-  required this.svgIconPath,
+  this.svgIconPath,
   this.sizeFont = 18
   });
 

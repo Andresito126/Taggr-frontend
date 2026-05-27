@@ -131,7 +131,7 @@ class _PostCardState extends State<PostCard> {
                     const SizedBox(width: 6),
                     Text(widget.comments.toString(), style: AppTextStyles.caption),
                     const Spacer(),
-                    const Icon(Icons.bookmark_border, color: AppColors.textSecondary, size: 20),
+                    const Icon(Icons.more_horiz_outlined, color: AppColors.textSecondary, size: 20),
                   ],
                 ),
               ],

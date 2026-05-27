@@ -12,10 +12,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
 
   @override
   void dispose() {
@@ -23,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _emailController,
                     ),
 
-                    SizedBox(height: 16,),
+                    SizedBox(height: 16),
 
                     InputField(
                       textInput: "Password",
