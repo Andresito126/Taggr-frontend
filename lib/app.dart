@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taggr/features/auth/presentation/screens/login_screen.dart';
+import 'package:taggr/features/auth/presentation/screens/register_screen.dart';
 import 'package:taggr/shared/theme/theme.dart';
 import 'package:taggr/shared/theme/util.dart';
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       home: Scaffold(
-        body: LoginScreen(),
+        body: RegisterScreen(),
         ),
     );
   }

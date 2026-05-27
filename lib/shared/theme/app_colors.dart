@@ -9,7 +9,8 @@ class AppColors {
   static const Color surface = Color(0xFF1A1A1A);   
   
   static const Color borderWhite = Colors.white;
-  
+  static const Color borderGrey = Color(0x1AFFFFFF);
+
   static const Color neonGreen = Color(0xFF39FF14);
 
   static const Color neonBlue = Color(0xFF99A1AF); //grisesito como para textos no tan importantes
