@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:taggr/core/components/main_layout.dart';
+import 'package:taggr/features/auth/presentation/screens/login_screen.dart';
 import 'package:taggr/features/auth/presentation/screens/register_screen.dart';
-import 'package:taggr/features/posts/presentation/screens/home_screen.dart';
 import 'package:taggr/shared/theme/theme.dart';
 import 'package:taggr/shared/theme/util.dart';
 
@@ -13,15 +14,21 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'TAGGR',
       theme: theme.light(),
       darkTheme: theme.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
       ),
       themeMode: ThemeMode.dark,
-      home: Scaffold(
-        body: HomeScreen(),
-        ),
+
+      initialRoute: '/login',
+
+    routes: {
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/home': (context) => const MainLayout(), 
+      },
+      
     );
   }
 }

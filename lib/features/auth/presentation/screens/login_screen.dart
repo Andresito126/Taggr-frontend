@@ -91,7 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.neonGreen,
                           foregroundColor: Colors.black,
@@ -121,11 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RegisterScreen())
-                            );
+                            Navigator.pushReplacementNamed(context, '/home');
                           },
                           child: Text(
                             " Sign Up",
