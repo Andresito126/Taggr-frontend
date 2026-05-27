@@ -152,26 +152,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: TitleSection(title: "Login", svgIconPath: "assets/logos/taggr_logo.svg"),
-    //     backgroundColor: Colors.black,
-    //     elevation: 0,
-    //     scrolledUnderElevation: 0,
-
-    //     bottom: PreferredSize(
-    //       preferredSize: const Size.fromHeight(1.0),
-    //       child: Container(
-    //         color: Colors.white24,
-    //         height: 1.0,
-    //       ),
-    //     ),
-
-    //   ),
-    //   body: Center(
-    //     child: Text("Login Screen"),
-    //   ),
-    // );
   }
 }
