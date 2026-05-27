@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taggr/features/posts/presentation/screens/create_post_screen.dart';
 import 'package:taggr/features/posts/presentation/screens/home_screen.dart';
 import 'package:taggr/shared/theme/app_colors.dart';
 
@@ -17,9 +18,7 @@ class _MainLayoutState extends State<MainLayout> {
     const Center(
       child: Text("Explore", style: TextStyle(color: Colors.white)),
     ),
-    const Center(
-      child: Text("Create Post", style: TextStyle(color: Colors.white)),
-    ),
+    const CreatePostScreen(),
     const Center(
       child: Text("Notifications", style: TextStyle(color: Colors.white)),
     ),

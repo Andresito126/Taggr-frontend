@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:taggr/shared/theme/app_colors.dart';
 import 'package:taggr/shared/theme/app_text_styles.dart';
 
-class InputField extends StatelessWidget {
+class DropdownField extends StatelessWidget {
   final String textInput;
   final String hTPlaceHolder;
-  final bool isPassword;
   final IconData? iconInput;
-  final Color colorField;
-  final TextEditingController? controller;
+  final List<String> items;
+  final String? value;
+  final Function(String?) onChanged;
 
-  const InputField({
+  const DropdownField({
     super.key,
     required this.textInput,
     required this.hTPlaceHolder,
-    this.isPassword = false,
+    required this.items,
+    required this.onChanged,
+    this.value,
     this.iconInput,
-    this.colorField = AppColors.background,
-    this.controller,
   });
 
   @override
@@ -35,21 +35,24 @@ class InputField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
 
-        TextFormField(
-          controller: controller,
-          obscureText: isPassword,
+        DropdownButtonFormField<String>(
+          value: value,
+          icon: const Icon(
+            Icons.keyboard_arrow_down,
+            color: AppColors.textSecondary,
+          ),
+          dropdownColor: AppColors.background,
           style: AppTextStyles.body.copyWith(color: AppColors.textPrimary),
           decoration: InputDecoration(
             prefixIcon: iconInput != null
-                ? Icon(iconInput, color: AppColors.neonBlue)
+                ? Icon(iconInput, color: AppColors.textSecondary)
                 : null,
-
             hintText: hTPlaceHolder,
             hintStyle: AppTextStyles.caption.copyWith(
-              color: AppColors.neonBlue,
+              color: AppColors.textSecondary,
             ),
             filled: true,
-            fillColor: colorField,
+            fillColor: AppColors.surface,
             contentPadding: const EdgeInsets.symmetric(
               vertical: 16.0,
               horizontal: 16.0,
@@ -59,12 +62,20 @@ class InputField extends StatelessWidget {
               borderRadius: BorderRadius.zero,
               borderSide: BorderSide(color: Colors.white12, width: 1),
             ),
-
             focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.zero,
               borderSide: BorderSide(color: AppColors.neonGreen, width: 2),
             ),
           ),
+
+          items: items.map((String category) {
+            return DropdownMenuItem<String>(
+              value: category,
+              child: Text(category),
+            );
+          }).toList(),
+
+          onChanged: onChanged,
         ),
       ],
     );

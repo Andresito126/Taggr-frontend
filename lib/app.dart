@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taggr/core/components/main_layout.dart';
 import 'package:taggr/features/auth/presentation/screens/login_screen.dart';
 import 'package:taggr/features/auth/presentation/screens/register_screen.dart';
+import 'package:taggr/features/posts/presentation/screens/create_post_screen.dart';
 import 'package:taggr/shared/theme/theme.dart';
 import 'package:taggr/shared/theme/util.dart';
 
