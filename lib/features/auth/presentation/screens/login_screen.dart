@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:taggr/features/auth/presentation/providers/auth_provider.dart';
+import 'package:taggr/features/auth/presentation/providers/auth_ui_state.dart';
 import 'package:taggr/shared/components/input_field.dart';
 import 'package:taggr/shared/theme/app_colors.dart';
 import 'package:taggr/shared/theme/app_text_styles.dart';
@@ -86,25 +89,71 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       width: double.infinity,
                       height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/home');
+                      child: Consumer<AuthProvider>(
+                        builder: (context, authProvider, child) {
+                          // checo si esta cargando para deshabilitar el boton
+                          final isLoading = authProvider.state is AuthLoading;
+
+                          return ElevatedButton(
+                            // si anda cargando, pasamos null para que no le puedan hacer doble clic
+                            onPressed: isLoading ? null : () async {
+                              final email = _emailController.text.trim();
+                              final password = _passwordController.text.trim();
+
+                              // 1. Validación rápida
+                              if (email.isEmpty || password.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Llena todos los campos.")),
+                                );
+                                return;
+                              }
+
+                              // va al back
+                              await authProvider.login(email, password);
+
+                              // se verifica la pantalla
+                              if (!context.mounted) return;
+
+                              // ya vemos el resulttttt
+                              if (authProvider.state is AuthSuccess) {
+                                Navigator.pushReplacementNamed(context, '/home');
+                              } else if (authProvider.state is AuthError) {
+                                final errorMsg = (authProvider.state as AuthError).message;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(errorMsg, style: const TextStyle(color: Colors.white)),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.neonGreen,
+                              foregroundColor: Colors.black,
+                              disabledBackgroundColor: Colors.grey.shade800, 
+                              elevation: 0,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.zero,
+                              ),
+                            ),
+                            child: isLoading
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                      strokeWidth: 3,
+                                    ),
+                                  )
+                                : Text(
+                                    "LOGIN", 
+                                    style: AppTextStyles.title.copyWith(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                          );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.neonGreen,
-                          foregroundColor: Colors.black,
-                          elevation: 0,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
-                        ),
-                        child: Text(
-                          "SIGN UP",
-                          style: AppTextStyles.title.copyWith(
-                            color: Colors.black,
-                            fontSize: 24,
-                          ),
-                        ),
                       ),
                     ),
 
@@ -119,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacementNamed(context, '/home');
+                            Navigator.pushReplacementNamed(context, '/register');
                           },
                           child: Text(
                             " Sign Up",
