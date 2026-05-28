@@ -1,6 +1,6 @@
 
-import 'package:taggr/features/auth/presentation/domain/entities/user.dart';
-import 'package:taggr/features/auth/presentation/domain/repositories/auth_repository.dart';
+import 'package:taggr/features/auth/domain/entities/user.dart';
+import 'package:taggr/features/auth/domain/repositories/auth_repository.dart';
 
 class LoginUsecase {
   final AuthRepository _repository;

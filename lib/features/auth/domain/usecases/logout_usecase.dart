@@ -1,4 +1,4 @@
-import 'package:taggr/features/auth/presentation/domain/repositories/auth_repository.dart';
+import 'package:taggr/features/auth/domain/repositories/auth_repository.dart';
 
 class LogoutUseCase {
   final AuthRepository _repository;

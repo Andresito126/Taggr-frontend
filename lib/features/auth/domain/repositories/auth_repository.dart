@@ -1,5 +1,5 @@
 
-import 'package:taggr/features/auth/presentation/domain/entities/user.dart';
+import 'package:taggr/features/auth/domain/entities/user.dart';
 
 abstract class AuthRepository{
   Future <User> login (String email, String password);
