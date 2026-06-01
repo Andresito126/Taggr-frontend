@@ -7,7 +7,6 @@ class AuthResponseModel {
 
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
     return AuthResponseModel(
-      // Mapeamos el "user_id" de tu backend a la entidad inmaculada
       user: User(id: json['user_id']),
     );
   }

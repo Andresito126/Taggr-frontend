@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:taggr/core/storage/user_storage.dart';
 
 class ApiClient {
-  static const String baseUrl = 'http://172.20.10.8:3000/api';
+  static const String baseUrl = 'http://172.20.10.2:3000/api';
 
   final http.Client client;
   final UserStorage _userStorage; 

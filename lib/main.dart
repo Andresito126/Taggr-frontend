@@ -5,32 +5,33 @@ import 'package:provider/provider.dart';
 import 'package:taggr/app.dart';
 import 'package:taggr/core/di/app_container.dart';
 import 'package:taggr/features/auth/di/auth_module.dart';
+import 'package:taggr/features/posts/di/post_module.dart';
 
-void main() async{
-
+void main() async {
   // para que jale la asincronia
   WidgetsFlutterBinding.ensureInitialized();
 
   // levanta el contenedor
   final appContainer = await AppContainer.create();
-  
+
   final authModule = AuthModule(appContainer);
+  final postModule = PostModule(appContainer);
 
-
-  
-runApp(
+  runApp(
     DevicePreview(
       enabled: kIsWeb,
       //se hace la ibteyccion
-      builder: (context) => MultiProvider( 
+      builder: (context) => MultiProvider(
         providers: [
           ChangeNotifierProvider(
             create: (_) => authModule.provideAuthProvider(),
           ),
+          ChangeNotifierProvider(
+            create: (_) => postModule.providePostProvider(),
+          ),
         ],
-        child: const MyApp(), 
+        child: const MyApp(),
       ),
     ),
   );
 }
- 
