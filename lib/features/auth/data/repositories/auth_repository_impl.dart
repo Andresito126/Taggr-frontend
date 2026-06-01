@@ -13,7 +13,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<User> login(String email, String password) async {
-    // Empaquetamos los datos en el Request Model
     final request = LoginRequestModel(email: email, password: password);
     final response = await _dataSource.login(request);
     

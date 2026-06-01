@@ -11,7 +11,7 @@ abstract class PostRepository {
 
   Future<List<Post>> getAllPosts();
 
-  Future <Post> getPostById(String id);
+  // Future <Post> getPostById(String id);
 
   Future<Post> updatePost(
     String id,
