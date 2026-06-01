@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               final email = _emailController.text.trim();
                               final password = _passwordController.text.trim();
 
-                              // 1. Validación rápida
+                              // vlidación rápida
                               if (email.isEmpty || password.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text("Llena todos los campos.")),
