@@ -47,6 +47,16 @@ class PostProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> updatePost(String id, String title, String description, String category, List<String> tags) async {
+    _emit(PostLoading());
+    try {
+      await updatePostUseCase(id, title, description, category, tags);
+      await loadPosts();
+    } catch (e) {
+      _emit(PostError(_formatError(e)));
+    }
+  }
+
   Future<void> deletePost(String id) async {
     _emit(PostLoading());
     try {

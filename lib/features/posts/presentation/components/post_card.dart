@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; 
 import 'package:taggr/features/posts/presentation/screens/create_post_screen.dart';
+import 'package:taggr/features/posts/presentation/providers/post_provider.dart';
 import 'package:taggr/shared/theme/app_colors.dart';
 import 'package:taggr/shared/theme/app_text_styles.dart';
 
 class PostCard extends StatefulWidget {
+  final String id;
   final String imageUrl;
   final String category;
   final String userName;
   final String title;
   final String description;
+  final List<String> tags; 
   final int likes;
   final int comments;
 
   const PostCard({
     super.key,
+    required this.id, 
     required this.imageUrl,
     required this.category,
     required this.userName,
     required this.title,
     required this.description,
+    required this.tags, 
     required this.likes,
     required this.comments,
   });
@@ -28,6 +34,50 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          shape: const RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white12),
+            borderRadius: BorderRadius.zero,
+          ),
+          title: Text(
+            "Delete Post",
+            style: AppTextStyles.title.copyWith(color: Colors.redAccent),
+          ),
+          content: Text(
+            "Are you sure you want to delete '${widget.title}'? This action cannot be undone.",
+            style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: Text(
+                "CANCEL",
+                style: AppTextStyles.body.copyWith(color: AppColors.textPrimary),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext); 
+                context.read<PostProvider>().deletePost(widget.id);
+              },
+              child: Text(
+                "DELETE",
+                style: AppTextStyles.body.copyWith(color: Colors.redAccent),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -100,7 +150,7 @@ class _PostCardState extends State<PostCard> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
                       widget.userName,
                       style: AppTextStyles.caption.copyWith(
@@ -164,27 +214,26 @@ class _PostCardState extends State<PostCard> {
                           side: BorderSide(color: Colors.white12, width: 1),
                           borderRadius: BorderRadius.zero,
                         ),
-
-                        //POR EL MOMENTO LLLLLLLLLLLLLLLLLLLLO DEJO ASIIIIIIIIIIIIIIIIIII
                         onSelected: (String action) {
                           if (action == 'save') {
                             print("Guardar post: ${widget.title}");
                           } else if (action == 'edit') {
-                            // le mandamos la data paara crearaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => CreatePostScreen(
                                   postToEdit: {
+                                    'id': widget.id,
                                     'title': widget.title,
                                     'description': widget.description,
                                     'category': widget.category,
+                                    'tags': widget.tags,
                                   },
                                 ),
                               ),
                             );
                           } else if (action == 'delete') {
-                            print("Eliminar post: ${widget.title}");
+                            _confirmDelete(context);
                           }
                         },
                         itemBuilder: (BuildContext context) =>

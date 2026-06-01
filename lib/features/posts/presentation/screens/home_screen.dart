@@ -81,11 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   final post = posts[index];
                   return PostCard(
+                    id: post.id,
                     imageUrl: "assets/imgs/tatto_img.png",
                     category: post.category,
                     userName: post.userId.substring(0, 4),
                     title: post.title,
                     description: post.description,
+                    tags: post.tags,
                     likes: 12,
                     comments: 18,
                   );

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:taggr/features/posts/presentation/providers/post_provider.dart';
+import 'package:taggr/features/posts/presentation/providers/post_ui_state.dart';
 import 'package:taggr/shared/components/dropdown_field.dart';
 import 'package:taggr/shared/components/input_field.dart';
 import 'package:taggr/shared/components/title_section.dart';
@@ -24,15 +27,21 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final List<String> _categories = ["Graffiti", "Tatto", "Digital Art", "Stickers", "Urban Photography"];
 
   @override
-  void initState() {
+void initState() {
     super.initState();
 
     if (widget.postToEdit != null) {
       _titleController.text = widget.postToEdit!['title'] ?? '';
       _descriptionController.text = widget.postToEdit!['description'] ?? '';
-
+      
       if (_categories.contains(widget.postToEdit!['category'])) {
         _selectedCategory = widget.postToEdit!['category'];
+        _categoryController.text = _selectedCategory!;
+      }
+
+      if (widget.postToEdit!['tags'] != null) {
+        final List<String> loadedTags = widget.postToEdit!['tags'];
+        _tagsController.text = loadedTags.join(', ');
       }
     }
   }
@@ -46,13 +55,59 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     super.dispose();
   }
 
+void _submitPost() async {
+    final title = _titleController.text.trim();
+    final description = _descriptionController.text.trim();
+    final category = _categoryController.text.trim();
+    final tagsText = _tagsController.text.trim();
+
+    if (title.isEmpty || category.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Title and Category are required!'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+      return;
+    }
+
+    List<String> tagsList = [];
+    if (tagsText.isNotEmpty) {
+      tagsList = tagsText.split(',').map((e) => e.trim()).toList();
+    }
+
+    final provider = context.read<PostProvider>();
+    
+    final isEditing = widget.postToEdit != null && widget.postToEdit!.containsKey('id');
+    
+    if (isEditing) {
+      final idToEdit = widget.postToEdit!['id'];
+      await provider.updatePost(idToEdit, title, description, category, tagsList);
+    } else {
+      await provider.createPost(title, description, category, tagsList);
+    }
+
+    if (!mounted) return;
+
+    final state = provider.state;
+    if (state is PostError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.message),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    } else {
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: TitleSection(title: "Create", sizeFont: 36),
-
+        title: const TitleSection(title: "Create", sizeFont: 36),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(color: AppColors.borderWhite, height: 1.0),
@@ -62,7 +117,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         child: SingleChildScrollView(
           child: SizedBox(
             width: double.infinity,
-
             child: Column(
               children: [
                 Container(
@@ -76,13 +130,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 36),
                     child: Column(
                       children: [
-                        Icon(Icons.upload_file_outlined, size: 48),
-                        SizedBox(height: 10),
+                        const Icon(Icons.upload_file_outlined, size: 48),
+                        const SizedBox(height: 10),
                         Text(
                           "Click to upload your art",
                           style: AppTextStyles.caption,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
                           "PNG, JPG up to 10MB",
                           style: AppTextStyles.caption,
@@ -104,7 +158,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         colorField: AppColors.surface,
                         controller: _titleController,
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       InputField(
                         textInput: "Description",
                         hTPlaceHolder: "Tell your story",
@@ -112,17 +166,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         colorField: AppColors.surface,
                         controller: _descriptionController,
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       DropdownField(
                         textInput: "Category",
-                        hTPlaceHolder: "Select categor",
+                        hTPlaceHolder: "Select category",
                         iconInput: Icons.category_outlined,
-                        items: ["Mural", "Sticker", "Wildstyle", "Stencil"],
+                        items: const ["Mural", "Sticker", "Wildstyle", "Stencil"],
                         onChanged: (value) {
                           _categoryController.text = value ?? "";
                         },
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       InputField(
                         textInput: "Tags",
                         hTPlaceHolder: "urban, spray, wildstyle",
@@ -130,8 +184,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         colorField: AppColors.surface,
                         controller: _tagsController,
                       ),
-                      SizedBox(height: 10),
-
+                      const SizedBox(height: 10),
                       Text(
                         "Separate tags with commas",
                         style: AppTextStyles.caption,
@@ -143,23 +196,39 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 SizedBox(
                   width: double.infinity,
                   height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.neonGreen,
-                      foregroundColor: Colors.black,
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                    ),
-                    child: Text(
-                      "POST",
-                      style: AppTextStyles.title.copyWith(
-                        color: Colors.black,
-                        fontSize: 24,
-                      ),
-                    ),
+                  child: Consumer<PostProvider>(
+                    builder: (context, provider, child) {
+                      final isLoading = provider.state is PostLoading;
+
+                      return ElevatedButton(
+                        onPressed: isLoading ? null : _submitPost,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.neonGreen,
+                          foregroundColor: Colors.black,
+                          elevation: 0,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          disabledBackgroundColor: Colors.grey[800],
+                        ),
+                        child: isLoading
+                            ? const SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                "POST",
+                                style: AppTextStyles.title.copyWith(
+                                  color: isLoading ? Colors.white54 : Colors.black,
+                                  fontSize: 24,
+                                ),
+                              ),
+                      );
+                    },
                   ),
                 ),
               ],
